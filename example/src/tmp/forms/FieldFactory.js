@@ -4,6 +4,8 @@ import StringField from './StringField'
 import BoolField from './BoolField'
 import EmailField from './EmailField'
 
+import AceEditorField from './AceEditorField'
+
 const FieldFactory = {
   string: {
     name: 'String',
@@ -21,7 +23,15 @@ const FieldFactory = {
     name: 'Bool',
     type: 'bool',
     render: (field, model, onChange) => <BoolField field={field} model={model} onChange={onChange} />
-  }
+  },
+
+  code: {
+    name: 'Code',
+    type: 'code',
+    render: (field, model, onChange) => <AceEditorField field={field} model={model} onChange={onChange} />
+  },
+
+
 }
 
 FieldFactory.render = (field, model, onChange) => {

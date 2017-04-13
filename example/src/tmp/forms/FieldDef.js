@@ -22,5 +22,10 @@ FieldDef.Email = (options) => FieldDef.of(_.assignIn({ type: 'email', defaultVal
 FieldDef.Bool = (options) => FieldDef.of(_.assignIn({ type: 'bool', defaultValue: false}, _.defaultTo(options, {})))
 FieldDef.Text = (options) => FieldDef.of(_.assignIn({ type: 'text', defaultValue: ''}, _.defaultTo(options, {})))
 
+FieldDef.Code = (options) => FieldDef.of(_.assignIn({ type: 'code', defaultValue: '', mode: 'json', theme: 'github' }, _.defaultTo(options, {})))
+FieldDef.Json = (options) => FieldDef.Code(options)
+FieldDef.Javascript = (options) => FieldDef.Code(_.assignIn({ mode: 'javascript', theme: 'monokai' }, _.defaultTo(options, {})))
+FieldDef.Java = (options) => FieldDef.Code(_.assignIn({ mode: 'java', theme: 'ambiance' }, _.defaultTo(options, {})))
+
 
 export default FieldDef

@@ -21,7 +21,7 @@ const actionFormDef = FormDef.of({
     FieldDef.Bool({ label: 'Enabled', path: '$.enabled' }),
     FieldDef.Bool({ label: 'Deprecated', path: '$.deprecated' }),
     FieldDef.Bool({ label: 'Visible', path: '$.visible' }),
-    // FieldDef.Json({ label: 'Meta', path: '$.meta' }),
+    FieldDef.Json({ label: 'Meta', path: '$.meta', defaultValue: '{}' }),
     // FieldDef.Form({ label: 'Access Control Checks', path: '$.accessControlChecks', defaultValue: [], definition: accessControlFormDef }),
     // FieldDef.Select({ label: 'Provider ID', path: '$.providedId', choices: fetchBcProviders }), // TODO: can do this in one comp? Need `Select` and `SelectFetch` for state management?
     // FieldDef.Form({ label: 'Parameters', path: '$.parameters', defaultValue: [], definition: parameterFormDef }),
