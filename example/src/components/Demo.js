@@ -19,6 +19,17 @@ Embedded Form State
 model@fieldDef.path => fieldDef.defaultValue => fieldDef.formDef.fields.defaultValue
 */
 
+const parameterTypes = [
+  { value: "ID", text: "ID" },
+  { value: "STRING", text: "String (textbox)" },
+  { value: "TEXT", text: "Text (textarea)" },
+  { value: "INTEGER", text: "Int" },
+  { value: "DOUBLE", text: "Double" },
+  { value: "BOOLEAN", text: "Boolean" },
+  { value: "MAP", text: "Map" },
+  { value: "ARRAY", text: "Array" },
+]
+
 const providers = [
   { value: uuid(), text: 'Google' },
   { value: 'uuid-bettercloud-1234', text: 'BetterCloud' },
@@ -27,21 +38,27 @@ const providers = [
   { value: uuid(), text: 'Dropbox' }
 ]
 
-const providersPromise = new Promise((resolve, reject) => {
-  setTimeout(() => resolve(providers), 1500);
-});
+const providersPromise = new Promise((resolve, reject) => setTimeout(() => resolve(providers), 1500));
 
 const permissions = [
   "SLACK_VIEW_USERS", "SLACK_VIEW_CHANNELS", "SLACK_MANAGE_USERS", "SLACK_MANAGE_CHANNELS", "GOOGLE_ADMIN"
 ]
 
-const permissionsPromise = new Promise((resolve, reject) => {
-  setTimeout(() => resolve(permissions), 2000);
-});
+const permissionsPromise = new Promise((resolve, reject) => setTimeout(() => resolve(permissions), 2000));
 
-const accessControlFormDef = FormDef.Embedded({
+const accessControlFormDef = FormDef.List({
   fields: [
     FieldDef.SimpleSelect({ label: 'Permission', path: '$.key', choices: permissionsPromise }),
+  ]
+})
+
+const parameterFormDef = FormDef.List({
+  fields: [
+    FieldDef.String({ label: 'id', path: '$.id', defaultValue: uuid, readOnly: true }),
+    FieldDef.String({ label: 'name', path: '$.name' }),
+    FieldDef.Bool({ label: 'Required', path: '$.required', defaultValue: true }),
+    FieldDef.String({ label: 'Context Class', path: '$.contextClass' }), // TODO: typeahead
+    FieldDef.SimpleSelect({ label: 'Type', path: '$.type', defaultValue: 'ID', choices: parameterTypes }),
   ]
 })
 
@@ -55,14 +72,14 @@ const actionFormDef = FormDef.of({
       defaultValue: uuid
     }),
     FieldDef.String({ label: 'Name', path: '$.name' }),
-    FieldDef.Bool({ label: 'Enabled', path: '$.ae.enabled' }),
+    FieldDef.Bool({ label: 'Enabled', path: '$.ae.enabled', defaultValue: true }),
+    FieldDef.Bool({ label: 'Visible', path: '$.ae.visible', defaultValue: true }),
     FieldDef.Bool({ label: 'Deprecated', path: '$.ae.deprecated' }),
-    FieldDef.Bool({ label: 'Visible', path: '$.ae.visible' }),
     FieldDef.Json({ label: 'Meta', path: '$.ae.meta', defaultValue: '{}' }),
-    // FieldDef.EmbeddedList({ label: 'Access Control Checks', path: '$.accessControlChecks', formDef: accessControlFormDef }),
-    FieldDef.EmbeddedForm({ label: 'Access Control Checks', path: '$.ae.accessControlCheck', formDef: accessControlFormDef }),
+    FieldDef.EmbeddedList({ label: 'Access Control Checks', path: '$.ae.accessControlChecks', formDef: accessControlFormDef }),
+    // FieldDef.EmbeddedForm({ label: 'Access Control Checks', path: '$.ae.accessControlCheck', formDef: accessControlFormDef }),
     FieldDef.SimpleSelect({ label: 'Provider', path: '$.ae.providerId', choices: providersPromise }),
-    // FieldDef.Form({ label: 'Parameters', path: '$.parameters', defaultValue: [], definition: parameterFormDef }),
+    FieldDef.EmbeddedList({ label: 'Parameters', path: '$.ae.parameters', formDef: parameterFormDef }),
     // TODO: custom steps form field? could be done with drag and drop? http://jsfiddle.net/vacidesign/uskx816g/
   ]
 })
@@ -70,7 +87,24 @@ const actionFormDef = FormDef.of({
 const model = {
   // id: "aaa-1111-bbbb-22",
   ae: {
-    accessControlCheck: {}
+    // accessControlCheck: {},
+    "accessControlChecks": [
+      {
+        "key": "SLACK_VIEW_USERS"
+      },
+      {
+        "key": "SLACK_VIEW_CHANNELS"
+      },
+      {
+        "key": "SLACK_MANAGE_USERS"
+      },
+      {
+        "key": "SLACK_MANAGE_CHANNELS"
+      },
+      {
+        "key": "GOOGLE_ADMIN"
+      }
+    ],
     // providerId: providers[1].value
   }
 }

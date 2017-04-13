@@ -1,5 +1,5 @@
 import React from 'react'
-import jsonpath from 'kb-path'
+import _ from 'lodash'
 
 import StringField from './StringField'
 import BoolField from './BoolField'
@@ -8,6 +8,7 @@ import SimpleSelectField from './SimpleSelectField'
 import AceEditorField from './AceEditorField'
 
 import EmbeddedFormField from './EmbeddedFormField'
+import EmbeddedListField from './EmbeddedListField'
 
 const FieldFactory = {
   string: {
@@ -43,7 +44,13 @@ const FieldFactory = {
   embeddedForm: {
     name: 'Embedded Form',
     type: 'embeddedForm',
-    render: (field, model, onChange) => <EmbeddedFormField definition={field.formDef} model={jsonpath.path(model, field.path)} onChange={onChange} />
+    render: (field, model, onChange) => <EmbeddedFormField field={field} model={field.getDefaultValue(model)} onChange={onChange} />
+  },
+
+  embeddedList: {
+    name: 'Embedded List',
+    type: 'embeddedList',
+    render: (field, model, onChange) => <EmbeddedListField field={field} model={field.getDefaultValue(model)} onChange={onChange} />
   }
 }
 

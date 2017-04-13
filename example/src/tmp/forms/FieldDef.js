@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import jsonpath from 'kb-path'
 
 const fieldDefaults = {
   type: 'string'
@@ -13,7 +14,17 @@ const fieldDefaults = {
  *   bool     [readOnly]:      if the field can be edited
  */
 function FieldDef(options) {
+  const that = this;
   _.assignIn(this, fieldDefaults, _.defaultTo(options, {}));
+
+  this.getDefaultValue = (model) => {
+    const { path, defaultValue } = that;
+    let value = jsonpath.path(model, path);
+    if (_.isUndefined(value) && !_.isUndefined(defaultValue)) {
+      value = _.isFunction(defaultValue) ? defaultValue() : defaultValue
+    }
+    return value;
+  }
 }
 
 FieldDef.of = (options) => new FieldDef(options)
@@ -44,5 +55,6 @@ FieldDef.Javascript = (options) => FieldDef.Code(_.assignIn({ mode: 'javascript'
 FieldDef.Java = (options) => FieldDef.Code(_.assignIn({ mode: 'java', theme: 'ambiance' }, _.defaultTo(options, {})))
 
 FieldDef.EmbeddedForm = (options) => FieldDef.of(_.assignIn({ type: 'embeddedForm', defaultValue: {} }, _.defaultTo(options, {})))
+FieldDef.EmbeddedList = (options) => FieldDef.of(_.assignIn({ type: 'embeddedList', defaultValue: [] }, _.defaultTo(options, {})))
 
 export default FieldDef

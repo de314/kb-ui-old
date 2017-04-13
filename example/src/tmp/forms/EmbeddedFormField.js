@@ -7,12 +7,12 @@ import FieldFactory from './FieldFactory'
 
 import PropTypes from 'prop-types'
 
-const EmbeddedFormField = ({ definition, modelState, setModelState, onChange }) => {
+const EmbeddedFormField = ({ field, model, onChange }) => {
   return (
     <div className="EmbeddedFormField">
-      { definition.fields.map((field, i) => (
+      { field.formDef.fields.map((field, i) => (
         <div key={i}>
-          {FieldFactory.render(field, modelState, onChange)}
+          {FieldFactory.render(field, model, onChange)}
         </div>
       )) }
     </div>
@@ -20,23 +20,20 @@ const EmbeddedFormField = ({ definition, modelState, setModelState, onChange }) 
 }
 
 EmbeddedFormField.propTypes = {
-  definition: PropTypes.instanceOf(FormDef).isRequired,
+  field: PropTypes.shape({
+    path: PropTypes.string.isRequired,
+    formDef: PropTypes.instanceOf(FormDef).isRequired,
+  }).isRequired,
   onChange: PropTypes.func.isRequired,
-  // provided
-  modelState: PropTypes.object.isRequired,
-  setModelState: PropTypes.func.isRequired,
+  model: PropTypes.object.isRequired,
 }
 
 export default compose(
-  withState('modelState', 'setModelState', props => props.model),
   withHandlers({
     onChange: props => (path, val) => {
-      const { modelState, setModelState, onChange } = props;
-      jsonpath.set(modelState, path, val);
-      setModelState(modelState);
-      if (_.isFunction(onChange)) {
-        onChange(modelState)
-      }
+      const { field, model, onChange } = props;
+      jsonpath.set(model, path, val);
+      onChange(field.path, model)
     }
   })
 )(EmbeddedFormField)
