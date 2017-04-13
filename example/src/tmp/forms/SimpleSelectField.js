@@ -9,11 +9,11 @@ import defaultValueHoc from './defaultValueHoc'
 import FieldDef from './FieldDef'
 import SimpleFormGroup from './SimpleFormGroup'
 
-const SelectField = ({ field, resolvedChoices, model, onChange }) => {
+const SimpleSelectField = ({ field, resolvedChoices, model, onChange }) => {
   const { label, path, readOnly = false } = field,
       value = jsonpath.path(model, field.path);
   return (
-    <div className="KbSelectField">
+    <div className="KbSimpleSelectField">
       <SimpleFormGroup label={label}>
         <select onChange={e => onChange(path, e.target.value)} value={value} disabled={readOnly} >
           { resolvedChoices.map(({ value, text }, i) => (
@@ -25,7 +25,7 @@ const SelectField = ({ field, resolvedChoices, model, onChange }) => {
   );
 }
 
-SelectField.propTypes = {
+SimpleSelectField.propTypes = {
   field: PropTypes.instanceOf(FieldDef).isRequired,
   model: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
@@ -55,4 +55,4 @@ export default compose(
       });
     }
   })
-)(defaultValueHoc(SelectField))
+)(defaultValueHoc(SimpleSelectField))

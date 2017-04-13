@@ -3,7 +3,7 @@ import React from 'react'
 import StringField from './StringField'
 import BoolField from './BoolField'
 import EmailField from './EmailField'
-import SelectField from './SelectField'
+import SimpleSelectField from './SimpleSelectField'
 
 import AceEditorField from './AceEditorField'
 
@@ -29,7 +29,7 @@ const FieldFactory = {
   select: {
     name: 'Select',
     type: 'select',
-    render: (field, model, onChange) => <SelectField field={field} model={model} onChange={onChange} />
+    render: (field, model, onChange) => <SimpleSelectField field={field} model={model} onChange={onChange} />
   },
 
   code: {

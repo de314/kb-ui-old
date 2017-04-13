@@ -15,7 +15,7 @@ const providers = [
   { value: uuid(), text: 'Dropbox' }
 ]
 
-const providresPromise = new Promise((resolve, reject) => {
+const providersPromise = new Promise((resolve, reject) => {
   setTimeout(() => resolve(providers), 1500);
 });
 
@@ -34,7 +34,7 @@ const actionFormDef = FormDef.of({
     FieldDef.Bool({ label: 'Visible', path: '$.ae.visible' }),
     FieldDef.Json({ label: 'Meta', path: '$.ae.meta', defaultValue: '{}' }),
     // FieldDef.Form({ label: 'Access Control Checks', path: '$.accessControlChecks', defaultValue: [], definition: accessControlFormDef }),
-    FieldDef.Select({ label: 'Provider ID', path: '$.ae.providerId', choices: providresPromise }),
+    FieldDef.Select({ label: 'Provider ID', path: '$.ae.providerId', choices: providersPromise }),
     // FieldDef.Form({ label: 'Parameters', path: '$.parameters', defaultValue: [], definition: parameterFormDef }),
     // TODO: custom steps form field? could be done with drag and drop? http://jsfiddle.net/vacidesign/uskx816g/
   ]
