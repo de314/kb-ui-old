@@ -1,7 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 
-import './App.css'
 import 'react-select/dist/react-select.css'
 
 import Demo from './components/Demo'
