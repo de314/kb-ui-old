@@ -31,10 +31,12 @@ function mapChoices(choices = [ "Loading..." ]) {
   return { choices, defaultValue };
 }
 
-FieldDef.Select = (options) => {
+FieldDef.SimpleSelect = (options) => {
   const { choices, defaultValue } = mapChoices(options.choices);
   return FieldDef.of(_.assignIn({ type: 'select', defaultValue }, _.defaultTo(options, {}), { choices }))
 }
+FieldDef.Select = null; // TODO: https://github.com/JedWatson/react-select
+
 
 FieldDef.Code = (options) => FieldDef.of(_.assignIn({ type: 'code', defaultValue: '', mode: 'json', theme: 'github' }, _.defaultTo(options, {})))
 FieldDef.Json = (options) => FieldDef.Code(options)
