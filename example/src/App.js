@@ -5,6 +5,7 @@ import 'react-select/dist/react-select.css';
 import Demo from './components/Demo'
 
 import ActionFormDemo from './components/ActionFormDemo'
+import ActionViewDemo from './components/ActionViewDemo'
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
       <div className="App">
         <Route exact path="/" component={Demo} />
         <Route path="/forms" component={ActionFormDemo} />
+        <Route path="/views" component={ActionViewDemo} />
       </div>
     </Router>
   );
