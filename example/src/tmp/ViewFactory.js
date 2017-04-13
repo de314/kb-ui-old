@@ -2,6 +2,7 @@ import React from 'react'
 
 import View from './views/View'
 import ListView from './views/ListView'
+import TableView from './views/TableView'
 
 const ViewFactory = {
   simple: {
@@ -13,7 +14,13 @@ const ViewFactory = {
   list: {
     name: 'List View',
     type: 'list',
-    render: (definition, model, onChange, onSubmit) => <ListView definition={definition} model={model} />
+    render: (definition, model) => <ListView definition={definition} model={model} />
+  },
+
+  table: {
+    name: 'Table View',
+    type: 'table',
+    render: (definition, model) => <TableView definition={definition} model={model} />
   },
 
 }

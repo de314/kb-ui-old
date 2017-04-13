@@ -5,7 +5,7 @@ import _ from 'lodash'
 const SimpleViewGroup = ({ label, children }) => {
   return (
     <span className="SimpleViewGroup">
-      <span className="view-label">{_.defaultTo(label, '')}</span>
+      { _.isUndefined(label) ? '' : (<span className="view-label">{label}</span>) }
       <span className="view-value">{children}</span>
     </span>
   );

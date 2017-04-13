@@ -6,7 +6,9 @@ import 'react-select/dist/react-select.css'
 import Demo from './components/Demo'
 
 import ActionFormDemo from './components/ActionFormDemo'
+
 import ActionViewDemo from './components/ActionViewDemo'
+import ActionsViewDemo from './components/ActionsViewDemo'
 
 const App = () => {
   return (
@@ -21,7 +23,9 @@ const App = () => {
           </ul>
         )} />
         <Route path="/forms/action" component={ActionFormDemo} />
+
         <Route path="/views/action" component={ActionViewDemo} />
+        <Route path="/views/actions" component={ActionsViewDemo} />
       </div>
     </Router>
   );
