@@ -3,6 +3,7 @@ import React from 'react'
 import StringField from './StringField'
 import BoolField from './BoolField'
 import EmailField from './EmailField'
+import SelectField from './SelectField'
 
 import AceEditorField from './AceEditorField'
 
@@ -23,6 +24,12 @@ const FieldFactory = {
     name: 'Bool',
     type: 'bool',
     render: (field, model, onChange) => <BoolField field={field} model={model} onChange={onChange} />
+  },
+
+  select: {
+    name: 'Select',
+    type: 'select',
+    render: (field, model, onChange) => <SelectField field={field} model={model} onChange={onChange} />
   },
 
   code: {

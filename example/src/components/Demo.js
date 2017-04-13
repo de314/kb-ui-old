@@ -7,6 +7,17 @@ import FormFactory from '../tmp/forms/FormFactory'
 import FieldDef from '../tmp/forms/FieldDef'
 
 // https://bitbucket.org/bettercloud/ae-git-bridge-micro/src/31303ff8814fbdee3e9e0b1f82e2c08d98cb02a4/src/main/resources/static/admin/index.html?at=continuous&fileviewer=file-view-default
+const providers = [
+  { value: uuid(), text: 'Google' },
+  { value: 'uuid-bettercloud-1234', text: 'BetterCloud' },
+  { value: uuid(), text: 'Slack' },
+  { value: uuid(), text: 'Zendesk' },
+  { value: uuid(), text: 'Dropbox' }
+]
+
+const providresPromise = new Promise((resolve, reject) => {
+  setTimeout(() => resolve(providers), 1500);
+});
 
 const actionFormDef = FormDef.of({
   collection: 'actions',
@@ -18,12 +29,12 @@ const actionFormDef = FormDef.of({
       defaultValue: uuid
     }),
     FieldDef.String({ label: 'Name', path: '$.name' }),
-    FieldDef.Bool({ label: 'Enabled', path: '$.enabled' }),
-    FieldDef.Bool({ label: 'Deprecated', path: '$.deprecated' }),
-    FieldDef.Bool({ label: 'Visible', path: '$.visible' }),
-    FieldDef.Json({ label: 'Meta', path: '$.meta', defaultValue: '{}' }),
+    FieldDef.Bool({ label: 'Enabled', path: '$.ae.enabled' }),
+    FieldDef.Bool({ label: 'Deprecated', path: '$.ae.deprecated' }),
+    FieldDef.Bool({ label: 'Visible', path: '$.ae.visible' }),
+    FieldDef.Json({ label: 'Meta', path: '$.ae.meta', defaultValue: '{}' }),
     // FieldDef.Form({ label: 'Access Control Checks', path: '$.accessControlChecks', defaultValue: [], definition: accessControlFormDef }),
-    // FieldDef.Select({ label: 'Provider ID', path: '$.providedId', choices: fetchBcProviders }), // TODO: can do this in one comp? Need `Select` and `SelectFetch` for state management?
+    FieldDef.Select({ label: 'Provider ID', path: '$.ae.providerId', choices: providresPromise }),
     // FieldDef.Form({ label: 'Parameters', path: '$.parameters', defaultValue: [], definition: parameterFormDef }),
     // TODO: custom steps form field? could be done with drag and drop? http://jsfiddle.net/vacidesign/uskx816g/
   ]
@@ -31,7 +42,10 @@ const actionFormDef = FormDef.of({
 
 const model = {
   // id: "aaa-1111-bbbb-22",
-  email: "model.email@testing.io"
+  email: "model.email@testing.io",
+  ae: {
+    // providerId: providers[1].value
+  }
 }
 
 const Demo = ({ curr, setCurr, saved, setSaved }) => {
