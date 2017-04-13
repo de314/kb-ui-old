@@ -1,122 +1,68 @@
 import React from 'react'
-import { compose, withState } from 'recompose'
-import uuid from 'uuid'
 
-import FormDef from '../tmp/FormDef'
-import FormFactory from '../tmp/FormFactory'
+import ViewDef from '../tmp/ViewDef'
+import ViewFactory from '../tmp/ViewFactory'
 import FieldDef from '../tmp/FieldDef'
 
 // https://bitbucket.org/bettercloud/ae-git-bridge-micro/src/31303ff8814fbdee3e9e0b1f82e2c08d98cb02a4/src/main/resources/static/admin/index.html?at=continuous&fileviewer=file-view-default
 
-
-/*
-How shit works:
-
-Field State
-model@fieldDef.path => fieldDef.defaultVale => field.defaultValue
-
-Embedded Form State
-model@fieldDef.path => fieldDef.defaultValue => fieldDef.formDef.fields.defaultValue
-*/
-
-const parameterTypes = [
-  { value: "ID", label: "ID" },
-  { value: "STRING", label: "String (textbox)" },
-  { value: "TEXT", label: "Text (textarea)" },
-  { value: "INTEGER", label: "Int" },
-  { value: "DOUBLE", label: "Double" },
-  { value: "BOOLEAN", label: "Boolean" },
-  { value: "MAP", label: "Map" },
-  { value: "ARRAY", label: "Array" },
-]
-
-const providers = [
-  { value: uuid(), label: 'Google' },
-  { value: 'uuid-bettercloud-1234', label: 'BetterCloud' },
-  { value: uuid(), label: 'Slack' },
-  { value: uuid(), label: 'Zendesk' },
-  { value: uuid(), label: 'Dropbox' }
-]
-
-const getProviders = function(input, callback) {
-  setTimeout(() => { callback(null, { options: providers, complete: true }) }, 1500)
-};
-
-// const providersPromise = new Promise((resolve, reject) => setTimeout(() => resolve(providers), 1500));
-
-const permissions = [
-  "SLACK_VIEW_USERS", "SLACK_VIEW_CHANNELS", "SLACK_MANAGE_USERS", "SLACK_MANAGE_CHANNELS", "GOOGLE_ADMIN"
-].map(p => { return { label: p, value: p } })
-
-const getPermissions = function(input, callback) {
-  setTimeout(() => { callback(null, { options: permissions, complete: true }) }, 2000)
-};
-
-const permissionAccess = [
-  { value: "CREATE", label: "Create" },
-  { value: "EDIT", label: "Edit" },
-  { value: "DELETE", label: "Delete" },
-  { value: "VIEW", label: "View" }
-]
-
-const contextClasses = [
-  "BCUser", "GoogleUser", "SlackUser", "DropboxUser", "ZendeskUser",
-  "BCGroup", "GoogleGroup", "SlackGroup", "DropboxGroup", "ZendeskGroup",
-  "BCAsset", "SlackFile", "SlackFolder", "DropboxFile", "DropboxFolder"
-].map(cc => { return { label: cc, value: cc } })
-
-const accessControlFormDef = FormDef.List({
+const accessControlViewDef = ViewDef.List({
   fields: [
-    FieldDef.AsyncSelect({ label: 'Permission', path: '$.key', choices: getPermissions }),
-    FieldDef.Select({ label: 'Access', path: '$.access', choices: permissionAccess, multi: true }),
+    FieldDef.String({ label: 'Permission', path: '$.key' }),
+    FieldDef.Tags({ label: 'Access', path: '$.access' }),
   ]
 })
 
-const parameterFormDef = FormDef.List({
+const parameterFormDef = ViewDef.List({
   fields: [
-    FieldDef.String({ label: 'id', path: '$.id', defaultValue: uuid, readOnly: true }),
+    FieldDef.String({ label: 'Parameter ID', path: '$.id' }),
     FieldDef.String({ label: 'name', path: '$.name' }),
-    FieldDef.Bool({ label: 'Required', path: '$.required', defaultValue: true }),
-    FieldDef.Tags({ label: 'Context Class', path: '$.contextClass', choices: contextClasses, multi: false }),
-    FieldDef.SimpleSelect({ label: 'Type', path: '$.type', defaultValue: 'ID', choices: parameterTypes }),
+    FieldDef.Bool({ label: 'Required', path: '$.required' }),
+    FieldDef.String({ label: 'Context Class', path: '$.contextClass' }),
+    FieldDef.String({ label: 'Type', path: '$.type' }),
   ]
 })
 
-const actionFormDef = FormDef.of({
+const actionViewDef = ViewDef.of({
   collection: 'actions',
   fields: [
-    FieldDef.UUID({ label: 'Id', path: '$.id' }),
-    FieldDef.String({ label: 'Name', path: '$.name' }),
-    FieldDef.Bool({ label: 'Enabled', path: '$.ae.enabled', defaultValue: true }),
-    FieldDef.Bool({ label: 'Visible', path: '$.ae.visible', defaultValue: true }),
+    FieldDef.String({ label: 'Name', path: '$.name' }), // TODO: Title/Classes
+    FieldDef.String({ label: 'Id', path: '$.id' }), // TODO: SubTitle/Classes
+    FieldDef.Bool({ label: 'Enabled', path: '$.ae.enabled' }),
+    FieldDef.Bool({ label: 'Visible', path: '$.ae.visible' }),
     FieldDef.Bool({ label: 'Deprecated', path: '$.ae.deprecated' }),
-    FieldDef.Json({ label: 'Meta', path: '$.ae.meta', defaultValue: '{}' }),
-    FieldDef.EmbeddedList({ label: 'Access Control Checks', path: '$.ae.accessControlChecks', formDef: accessControlFormDef }),
-    FieldDef.AsyncSelect({ label: 'Provider', path: '$.ae.providerId', defaultValue: 'uuid-bettercloud-1234', choices: getProviders }),
-    FieldDef.EmbeddedList({ label: 'Parameters', path: '$.ae.parameters', formDef: parameterFormDef }),
+    FieldDef.Json({ label: 'Meta', path: '$.ae.meta' }),
+    FieldDef.EmbeddedList({ label: 'Access Control Checks', path: '$.ae.accessControlChecks', viewDef: accessControlViewDef }),
+    FieldDef.String({ label: 'Provider', path: '$.ae.providerId' }), // TODO: EnrichableString
+    FieldDef.EmbeddedList({ label: 'Parameters', path: '$.ae.parameters', viewDef: parameterFormDef }),
 
     // TODO: custom steps form field? could be done with drag and drop? http://jsfiddle.net/vacidesign/uskx816g/
   ]
 })
 
 const model = {
-  // id: "aaa-1111-bbbb-22",
-  ae: {
+  "ae": {
     "accessControlChecks": [
       {
-        "key": "SLACK_VIEW_USERS"
+        "key": "SLACK_VIEW_USERS",
+        "access": [
+          "CREATE",
+          "EDIT",
+          "DELETE",
+          "VIEW"
+        ]
       },
       {
-        "key": "SLACK_VIEW_CHANNELS"
+        "key": "SLACK_VIEW_CHANNELS",
+        "access": ["CREATE"]
       },
       {
-        "key": "SLACK_MANAGE_USERS"
+        "key": "SLACK_MANAGE_USERS",
+        "access": ["CREATE"]
       },
       {
-        "key": "SLACK_MANAGE_CHANNELS"
-      },
-      {
-        "key": "GOOGLE_ADMIN"
+        "key": "SLACK_MANAGE_CHANNELS",
+        "access": ["CREATE"]
       }
     ],
     "parameters": [
@@ -127,32 +73,28 @@ const model = {
         "contextClass": "SlackUser",
         "type": "ID"
       }
-    ]
-  }
+    ],
+    "enabled": true,
+    "visible": true,
+    "deprecated": false,
+    "meta": "{\n    \"ff\": [ \"enable_sf_ga\" ]\n}",
+    "providerId": "uuid-bettercloud-1234"
+  },
+  "id": "8130fb7f-8e76-419f-ada2-ab108c96fd06",
+  "name": "My New Action"
 }
 
-const Demo = ({ curr, setCurr, saved, setSaved }) => {
+const Demo = ({ curr }) => {
   return (
     <div className="StringFieldDemo">
-      <h1>Form Input</h1>
+      <h1>View Input</h1>
       <div>
         <pre>{ JSON.stringify(model, null, 2) }</pre>
       </div>
-      <h1>Form</h1>
-      { FormFactory.render(actionFormDef, model, setCurr, setSaved) }
-      <h1>Current Form Model</h1>
-      <div>
-        <pre>{ JSON.stringify(curr, null, 2) }</pre>
-      </div>
-      <h1>Submitted Model</h1>
-      <div>
-        <pre>{ JSON.stringify(saved, null, 2) }</pre>
-      </div>
+      <h1>View</h1>
+      { ViewFactory.render(actionViewDef, model) }
     </div>
   );
 }
 
-export default compose(
-  withState('curr', 'setCurr', model),
-  withState('saved', 'setSaved', undefined)
-)(Demo)
+export default Demo

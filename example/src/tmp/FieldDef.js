@@ -45,6 +45,7 @@ function mapChoices(choices = [ "Loading..." ]) {
   return { choices, defaultValue };
 }
 
+
 FieldDef.SimpleSelect = (options) => {
   const { choices, defaultValue } = mapChoices(options.choices);
   return FieldDef.of(_.assignIn({ type: 'simpleSelect', defaultValue }, _.defaultTo(options, {}), { choices }))
