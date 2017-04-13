@@ -7,6 +7,7 @@ import FieldDef from '../tmp/FieldDef'
 // https://bitbucket.org/bettercloud/ae-git-bridge-micro/src/31303ff8814fbdee3e9e0b1f82e2c08d98cb02a4/src/main/resources/static/admin/index.html?at=continuous&fileviewer=file-view-default
 
 const accessControlViewDef = ViewDef.List({
+  label: 'Access Control Checks',
   fields: [
     FieldDef.String({ label: 'Permission', path: '$.key' }),
     FieldDef.Tags({ label: 'Access', path: '$.access' }),
@@ -14,6 +15,7 @@ const accessControlViewDef = ViewDef.List({
 })
 
 const parameterFormDef = ViewDef.List({
+  label: 'Parameters',
   fields: [
     FieldDef.String({ label: 'Parameter ID', path: '$.id' }),
     FieldDef.String({ label: 'name', path: '$.name' }),
@@ -31,10 +33,10 @@ const actionViewDef = ViewDef.of({
     FieldDef.Bool({ label: 'Enabled', path: '$.ae.enabled' }),
     FieldDef.Bool({ label: 'Visible', path: '$.ae.visible' }),
     FieldDef.Bool({ label: 'Deprecated', path: '$.ae.deprecated' }),
-    FieldDef.Json({ label: 'Meta', path: '$.ae.meta' }),
-    FieldDef.EmbeddedList({ label: 'Access Control Checks', path: '$.ae.accessControlChecks', viewDef: accessControlViewDef }),
+    FieldDef.Json({ label: 'Meta', path: '$.ae.meta', readOnly: true }),
+    FieldDef.EmbeddedList({ path: '$.ae.accessControlChecks', viewDef: accessControlViewDef }),
     FieldDef.String({ label: 'Provider', path: '$.ae.providerId' }), // TODO: EnrichableString
-    FieldDef.EmbeddedList({ label: 'Parameters', path: '$.ae.parameters', viewDef: parameterFormDef }),
+    FieldDef.EmbeddedList({ path: '$.ae.parameters', viewDef: parameterFormDef }),
 
     // TODO: custom steps form field? could be done with drag and drop? http://jsfiddle.net/vacidesign/uskx816g/
   ]
@@ -86,7 +88,7 @@ const model = {
 
 const Demo = ({ curr }) => {
   return (
-    <div className="StringFieldDemo">
+    <div className="StringFieldDemo" style={{ marginLeft: "25vw", width: "50vw"}}>
       <h1>View Input</h1>
       <div>
         <pre>{ JSON.stringify(model, null, 2) }</pre>

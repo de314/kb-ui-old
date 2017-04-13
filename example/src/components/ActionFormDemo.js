@@ -66,6 +66,7 @@ const contextClasses = [
 ].map(cc => { return { label: cc, value: cc } })
 
 const accessControlFormDef = FormDef.List({
+  removeText: 'X',
   fields: [
     FieldDef.AsyncSelect({ label: 'Permission', path: '$.key', choices: getPermissions }),
     FieldDef.Select({ label: 'Access', path: '$.access', choices: permissionAccess, multi: true }),
@@ -78,7 +79,7 @@ const parameterFormDef = FormDef.List({
     FieldDef.String({ label: 'name', path: '$.name' }),
     FieldDef.Bool({ label: 'Required', path: '$.required', defaultValue: true }),
     FieldDef.Tags({ label: 'Context Class', path: '$.contextClass', choices: contextClasses, multi: false }),
-    FieldDef.SimpleSelect({ label: 'Type', path: '$.type', defaultValue: 'ID', choices: parameterTypes }),
+    FieldDef.Select({ label: 'Type', path: '$.type', defaultValue: 'ID', choices: parameterTypes }),
   ]
 })
 
@@ -90,10 +91,10 @@ const actionFormDef = FormDef.of({
     FieldDef.Bool({ label: 'Enabled', path: '$.ae.enabled', defaultValue: true }),
     FieldDef.Bool({ label: 'Visible', path: '$.ae.visible', defaultValue: true }),
     FieldDef.Bool({ label: 'Deprecated', path: '$.ae.deprecated' }),
-    FieldDef.Json({ label: 'Meta', path: '$.ae.meta', defaultValue: '{}' }),
-    FieldDef.EmbeddedList({ label: 'Access Control Checks', path: '$.ae.accessControlChecks', formDef: accessControlFormDef }),
     FieldDef.AsyncSelect({ label: 'Provider', path: '$.ae.providerId', defaultValue: 'uuid-bettercloud-1234', choices: getProviders }),
-    FieldDef.EmbeddedList({ label: 'Parameters', path: '$.ae.parameters', formDef: parameterFormDef }),
+    FieldDef.Json({ label: 'Meta', path: '$.ae.meta', defaultValue: '{}' }),
+    FieldDef.EmbeddedList({ label: 'Access Control Checks', removeText: 'X', path: '$.ae.accessControlChecks', formDef: accessControlFormDef }),
+    FieldDef.EmbeddedList({ label: 'Parameters', removeText: 'X', path: '$.ae.parameters', formDef: parameterFormDef }),
 
     // TODO: custom steps form field? could be done with drag and drop? http://jsfiddle.net/vacidesign/uskx816g/
   ]
@@ -133,7 +134,7 @@ const model = {
 
 const Demo = ({ curr, setCurr, saved, setSaved }) => {
   return (
-    <div className="StringFieldDemo">
+    <div className="StringFieldDemo" style={{ marginLeft: "25vw", width: "50vw"}}>
       <h1>Form Input</h1>
       <div>
         <pre>{ JSON.stringify(model, null, 2) }</pre>

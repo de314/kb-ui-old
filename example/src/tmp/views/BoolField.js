@@ -7,11 +7,11 @@ import SimpleViewGroup from './SimpleViewGroup'
 
 const BoolField = ({ field, model }) => {
   const { label, path } = field,
-      value = jsonpath.path(model, path);
+      value = jsonpath.path(model, path) + '';
   return (
-    <div className="KbStringField">
+    <div className="KbBoolField">
       <SimpleViewGroup label={label}>
-        { value + '' }
+        <span className={`bool-${value}`}>{ value }</span>
       </SimpleViewGroup>
     </div>
   );

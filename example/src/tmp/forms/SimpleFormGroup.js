@@ -4,8 +4,10 @@ import _ from 'lodash'
 
 const SimpleFormGroup = ({ label, children }) => {
   return (
-    <div className="form-group">
-      { _.isUndefined(label) ? '' : (<label>{ label }</label>) }
+    <div className="SimpleFormGroup">
+      { _.isUndefined(label) ? '' : (
+        <span className="form-label"><label>{label}</label></span>
+      ) }
       { children }
     </div>
   );

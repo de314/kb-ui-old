@@ -17,7 +17,7 @@ import 'brace/theme/monokai'
 import 'brace/theme/ambiance'
 
 const AceEditorField = ({ field, model, onChange }) => {
-  const { label, path, mode, theme } = field,
+  const { label, path, mode, theme, readOnly = false } = field,
       value = jsonpath.path(model, field.path);
   return (
     <div className="AceEditorField">
@@ -27,6 +27,7 @@ const AceEditorField = ({ field, model, onChange }) => {
           theme={theme}
           width="100%"
           value={value}
+          readOnly={readOnly}
           onChange={newValue => onChange(path, newValue)}
           editorProps={{ $blockScrolling: Infinity }}
         />

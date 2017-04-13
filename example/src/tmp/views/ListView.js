@@ -4,10 +4,12 @@ import _ from 'lodash'
 import ViewDef from '../ViewDef'
 
 import View from './View'
+import SimpleViewGroup from './SimpleViewGroup'
 
 const ListView = ({ definition, model: models }) => {
   return (
     <div className="ListView">
+      <div className="list-view-label">{definition.label}</div>
       { models.map((model, i) => (
         <div className="list-view-item" key={i}>
           <View definition={definition} model={model} />
