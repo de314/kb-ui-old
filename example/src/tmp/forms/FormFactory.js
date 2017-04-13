@@ -3,11 +3,12 @@ import React from 'react'
 import Form from './Form'
 
 const FormFactory = {
-  toplevel: {
-    name: 'Top Level',
-    type: 'toplevel',
+  simple: {
+    name: 'Simple Form',
+    type: 'simple',
     render: (definition, model, onChange, onSubmit) => <Form definition={definition} model={model} onChange={onChange} onSubmit={onSubmit} />
   },
+
 }
 
 FormFactory.render = (definition, model, onChange, onSubmit) => {

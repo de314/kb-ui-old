@@ -43,5 +43,6 @@ FieldDef.Json = (options) => FieldDef.Code(options)
 FieldDef.Javascript = (options) => FieldDef.Code(_.assignIn({ mode: 'javascript', theme: 'monokai' }, _.defaultTo(options, {})))
 FieldDef.Java = (options) => FieldDef.Code(_.assignIn({ mode: 'java', theme: 'ambiance' }, _.defaultTo(options, {})))
 
+FieldDef.EmbeddedForm = (options) => FieldDef.of(_.assignIn({ type: 'embeddedForm', defaultValue: {} }, _.defaultTo(options, {})))
 
 export default FieldDef

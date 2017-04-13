@@ -7,6 +7,18 @@ import FormFactory from '../tmp/forms/FormFactory'
 import FieldDef from '../tmp/forms/FieldDef'
 
 // https://bitbucket.org/bettercloud/ae-git-bridge-micro/src/31303ff8814fbdee3e9e0b1f82e2c08d98cb02a4/src/main/resources/static/admin/index.html?at=continuous&fileviewer=file-view-default
+
+
+/*
+How shit works:
+
+Field State
+model@fieldDef.path => fieldDef.defaultVale => field.defaultValue
+
+Embedded Form State
+model@fieldDef.path => fieldDef.defaultValue => fieldDef.formDef.fields.defaultValue
+*/
+
 const providers = [
   { value: uuid(), text: 'Google' },
   { value: 'uuid-bettercloud-1234', text: 'BetterCloud' },
@@ -18,6 +30,20 @@ const providers = [
 const providersPromise = new Promise((resolve, reject) => {
   setTimeout(() => resolve(providers), 1500);
 });
+
+const permissions = [
+  "SLACK_VIEW_USERS", "SLACK_VIEW_CHANNELS", "SLACK_MANAGE_USERS", "SLACK_MANAGE_CHANNELS", "GOOGLE_ADMIN"
+]
+
+const permissionsPromise = new Promise((resolve, reject) => {
+  setTimeout(() => resolve(permissions), 2000);
+});
+
+const accessControlFormDef = FormDef.Embedded({
+  fields: [
+    FieldDef.SimpleSelect({ label: 'Permission', path: '$.key', choices: permissionsPromise }),
+  ]
+})
 
 const actionFormDef = FormDef.of({
   collection: 'actions',
@@ -33,8 +59,9 @@ const actionFormDef = FormDef.of({
     FieldDef.Bool({ label: 'Deprecated', path: '$.ae.deprecated' }),
     FieldDef.Bool({ label: 'Visible', path: '$.ae.visible' }),
     FieldDef.Json({ label: 'Meta', path: '$.ae.meta', defaultValue: '{}' }),
-    // FieldDef.Form({ label: 'Access Control Checks', path: '$.accessControlChecks', defaultValue: [], definition: accessControlFormDef }),
-    FieldDef.SimpleSelect({ label: 'Provider ID', path: '$.ae.providerId', choices: providersPromise }),
+    // FieldDef.EmbeddedList({ label: 'Access Control Checks', path: '$.accessControlChecks', formDef: accessControlFormDef }),
+    FieldDef.EmbeddedForm({ label: 'Access Control Checks', path: '$.ae.accessControlCheck', formDef: accessControlFormDef }),
+    FieldDef.SimpleSelect({ label: 'Provider', path: '$.ae.providerId', choices: providersPromise }),
     // FieldDef.Form({ label: 'Parameters', path: '$.parameters', defaultValue: [], definition: parameterFormDef }),
     // TODO: custom steps form field? could be done with drag and drop? http://jsfiddle.net/vacidesign/uskx816g/
   ]
@@ -42,8 +69,8 @@ const actionFormDef = FormDef.of({
 
 const model = {
   // id: "aaa-1111-bbbb-22",
-  email: "model.email@testing.io",
   ae: {
+    accessControlCheck: {}
     // providerId: providers[1].value
   }
 }

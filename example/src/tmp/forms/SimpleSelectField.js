@@ -44,8 +44,8 @@ export default compose(
           choices = choices.map(choice => { return { text: choice, value: choice } });
         }
         resolveChoices(choices)
-        if (_.isUndefined(value)) {
-          if (!_.isUndefined(field.defaultValue)) {
+        if (_.isUndefined(value) || value === '') {
+          if (!_.isUndefined(field.defaultValue) && field.defaultValue !== '') {
             defaultValue = _.isFunction(field.defaultValue) ? field.defaultValue() : field.defaultValue
           } else {
             defaultValue = choices[0].value
