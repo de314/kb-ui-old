@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import { compose, withState, withHandlers } from 'recompose'
+import { compose, withHandlers } from 'recompose'
 import jsonpath from 'kb-path'
 import FormDef from './FormDef'
 import FieldFactory from './FieldFactory'

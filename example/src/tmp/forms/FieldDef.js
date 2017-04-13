@@ -1,8 +1,10 @@
 import _ from 'lodash'
 import jsonpath from 'kb-path'
+import uuid from 'uuid'
 
 const fieldDefaults = {
-  type: 'string'
+  type: 'string',
+  readOnly: false,
 }
 
 /*
@@ -29,6 +31,7 @@ function FieldDef(options) {
 
 FieldDef.of = (options) => new FieldDef(options)
 FieldDef.String = (options) => FieldDef.of(_.assignIn({ type: 'string', defaultValue: ''}, _.defaultTo(options, {})))
+FieldDef.UUID = (options) => FieldDef.String(_.assignIn({ defaultValue: uuid, readOnly: true}, _.defaultTo(options, {})))
 FieldDef.Email = (options) => FieldDef.of(_.assignIn({ type: 'email', defaultValue: ''}, _.defaultTo(options, {})))
 FieldDef.Bool = (options) => FieldDef.of(_.assignIn({ type: 'bool', defaultValue: false}, _.defaultTo(options, {})))
 FieldDef.Text = (options) => FieldDef.of(_.assignIn({ type: 'text', defaultValue: ''}, _.defaultTo(options, {})))
@@ -44,9 +47,11 @@ function mapChoices(choices = [ "Loading..." ]) {
 
 FieldDef.SimpleSelect = (options) => {
   const { choices, defaultValue } = mapChoices(options.choices);
-  return FieldDef.of(_.assignIn({ type: 'select', defaultValue }, _.defaultTo(options, {}), { choices }))
+  return FieldDef.of(_.assignIn({ type: 'simpleSelect', defaultValue }, _.defaultTo(options, {}), { choices }))
 }
-FieldDef.Select = null; // TODO: https://github.com/JedWatson/react-select
+FieldDef.Select = (options) => FieldDef.of(_.assignIn({ type: 'select', defaultValue: options.choices[0].value, multi: false }, _.defaultTo(options, {})))
+FieldDef.AsyncSelect = (options) => FieldDef.of(_.assignIn({ type: 'asyncSelect', defaultValue: '', multi: false, loadOptions: options.choices }, _.defaultTo(options, {})))
+FieldDef.Tags = (options) => FieldDef.of(_.assignIn({ type: 'tags', defaultValue: options.multi ? [] : '', multi: true, options: [] }, _.defaultTo(options, {})))
 
 
 FieldDef.Code = (options) => FieldDef.of(_.assignIn({ type: 'code', defaultValue: '', mode: 'json', theme: 'github' }, _.defaultTo(options, {})))

@@ -16,8 +16,8 @@ const SimpleSelectField = ({ field, resolvedChoices, model, onChange }) => {
     <div className="KbSimpleSelectField">
       <SimpleFormGroup label={label}>
         <select onChange={e => onChange(path, e.target.value)} value={value} disabled={readOnly} >
-          { resolvedChoices.map(({ value, text }, i) => (
-            <option value={value} key={i}>{text}</option>
+          { resolvedChoices.map(({ value, label }, i) => (
+            <option value={value} key={i}>{label}</option>
           ))}
         </select>
       </SimpleFormGroup>
@@ -32,7 +32,7 @@ SimpleSelectField.propTypes = {
 }
 
 export default compose(
-  withState('resolvedChoices', 'resolveChoices', [ { text: 'Loading...' }]),
+  withState('resolvedChoices', 'resolveChoices', [ { label: 'Loading...' }]),
   lifecycle({
     componentWillMount() {
       const { field, model, onChange, resolveChoices } = this.props,
@@ -41,7 +41,7 @@ export default compose(
       field.choices.then(choices => {
         let defaultValue;
         if (_.isString(choices[0])) {
-          choices = choices.map(choice => { return { text: choice, value: choice } });
+          choices = choices.map(choice => { return { label: choice, value: choice } });
         }
         resolveChoices(choices)
         if (_.isUndefined(value) || value === '') {

@@ -15,6 +15,7 @@
     "react-bootstrap": "^0.30.8",
     "react-dom": "^15.5.4",
     "react-router-dom": "^4.1.0",
+    "react-select": "1.0.0-rc.3",
     "recompose": "^0.23.1",
     "uuid": "^3.0.1"
   },

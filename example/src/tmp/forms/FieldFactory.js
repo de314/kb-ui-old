@@ -5,6 +5,9 @@ import StringField from './StringField'
 import BoolField from './BoolField'
 import EmailField from './EmailField'
 import SimpleSelectField from './SimpleSelectField'
+import SelectField from './SelectField'
+import AsyncSelectField from './AsyncSelectField'
+import TagsField from './TagsField'
 import AceEditorField from './AceEditorField'
 
 import EmbeddedFormField from './EmbeddedFormField'
@@ -29,10 +32,28 @@ const FieldFactory = {
     render: (field, model, onChange) => <BoolField field={field} model={model} onChange={onChange} />
   },
 
+  simpleSelect: {
+    name: 'Simple Select',
+    type: 'simpleSelect',
+    render: (field, model, onChange) => <SimpleSelectField field={field} model={model} onChange={onChange} />
+  },
+
   select: {
     name: 'Select',
     type: 'select',
-    render: (field, model, onChange) => <SimpleSelectField field={field} model={model} onChange={onChange} />
+    render: (field, model, onChange) => <SelectField field={field} model={model} onChange={onChange} />
+  },
+
+  asyncSelect: {
+    name: 'Async Select',
+    type: 'asyncSelect',
+    render: (field, model, onChange) => <AsyncSelectField field={field} model={model} onChange={onChange} />
+  },
+
+  tags: {
+    name: 'Tags',
+    type: 'tags',
+    render: (field, model, onChange) => <TagsField field={field} model={model} onChange={onChange} />
   },
 
   code: {

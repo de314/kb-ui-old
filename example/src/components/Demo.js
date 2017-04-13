@@ -20,35 +20,55 @@ model@fieldDef.path => fieldDef.defaultValue => fieldDef.formDef.fields.defaultV
 */
 
 const parameterTypes = [
-  { value: "ID", text: "ID" },
-  { value: "STRING", text: "String (textbox)" },
-  { value: "TEXT", text: "Text (textarea)" },
-  { value: "INTEGER", text: "Int" },
-  { value: "DOUBLE", text: "Double" },
-  { value: "BOOLEAN", text: "Boolean" },
-  { value: "MAP", text: "Map" },
-  { value: "ARRAY", text: "Array" },
+  { value: "ID", label: "ID" },
+  { value: "STRING", label: "String (textbox)" },
+  { value: "TEXT", label: "Text (textarea)" },
+  { value: "INTEGER", label: "Int" },
+  { value: "DOUBLE", label: "Double" },
+  { value: "BOOLEAN", label: "Boolean" },
+  { value: "MAP", label: "Map" },
+  { value: "ARRAY", label: "Array" },
 ]
 
 const providers = [
-  { value: uuid(), text: 'Google' },
-  { value: 'uuid-bettercloud-1234', text: 'BetterCloud' },
-  { value: uuid(), text: 'Slack' },
-  { value: uuid(), text: 'Zendesk' },
-  { value: uuid(), text: 'Dropbox' }
+  { value: uuid(), label: 'Google' },
+  { value: 'uuid-bettercloud-1234', label: 'BetterCloud' },
+  { value: uuid(), label: 'Slack' },
+  { value: uuid(), label: 'Zendesk' },
+  { value: uuid(), label: 'Dropbox' }
 ]
 
-const providersPromise = new Promise((resolve, reject) => setTimeout(() => resolve(providers), 1500));
+const getProviders = function(input, callback) {
+  setTimeout(() => { callback(null, { options: providers, complete: true }) }, 1500)
+};
+
+// const providersPromise = new Promise((resolve, reject) => setTimeout(() => resolve(providers), 1500));
 
 const permissions = [
   "SLACK_VIEW_USERS", "SLACK_VIEW_CHANNELS", "SLACK_MANAGE_USERS", "SLACK_MANAGE_CHANNELS", "GOOGLE_ADMIN"
+].map(p => { return { label: p, value: p } })
+
+const getPermissions = function(input, callback) {
+  setTimeout(() => { callback(null, { options: permissions, complete: true }) }, 2000)
+};
+
+const permissionAccess = [
+  { value: "CREATE", label: "Create" },
+  { value: "EDIT", label: "Edit" },
+  { value: "DELETE", label: "Delete" },
+  { value: "VIEW", label: "View" }
 ]
 
-const permissionsPromise = new Promise((resolve, reject) => setTimeout(() => resolve(permissions), 2000));
+const contextClasses = [
+  "BCUser", "GoogleUser", "SlackUser", "DropboxUser", "ZendeskUser",
+  "BCGroup", "GoogleGroup", "SlackGroup", "DropboxGroup", "ZendeskGroup",
+  "BCAsset", "SlackFile", "SlackFolder", "DropboxFile", "DropboxFolder"
+].map(cc => { return { label: cc, value: cc } })
 
 const accessControlFormDef = FormDef.List({
   fields: [
-    FieldDef.SimpleSelect({ label: 'Permission', path: '$.key', choices: permissionsPromise }),
+    FieldDef.AsyncSelect({ label: 'Permission', path: '$.key', choices: getPermissions }),
+    FieldDef.Select({ label: 'Access', path: '$.access', choices: permissionAccess, multi: true }),
   ]
 })
 
@@ -57,7 +77,7 @@ const parameterFormDef = FormDef.List({
     FieldDef.String({ label: 'id', path: '$.id', defaultValue: uuid, readOnly: true }),
     FieldDef.String({ label: 'name', path: '$.name' }),
     FieldDef.Bool({ label: 'Required', path: '$.required', defaultValue: true }),
-    FieldDef.String({ label: 'Context Class', path: '$.contextClass' }), // TODO: typeahead
+    FieldDef.Tags({ label: 'Context Class', path: '$.contextClass', choices: contextClasses, multi: false }),
     FieldDef.SimpleSelect({ label: 'Type', path: '$.type', defaultValue: 'ID', choices: parameterTypes }),
   ]
 })
@@ -65,21 +85,16 @@ const parameterFormDef = FormDef.List({
 const actionFormDef = FormDef.of({
   collection: 'actions',
   fields: [
-    FieldDef.String({
-      label: 'Id',
-      path: '$.id',
-      readOnly: true,
-      defaultValue: uuid
-    }),
+    FieldDef.UUID({ label: 'Id', path: '$.id' }),
     FieldDef.String({ label: 'Name', path: '$.name' }),
     FieldDef.Bool({ label: 'Enabled', path: '$.ae.enabled', defaultValue: true }),
     FieldDef.Bool({ label: 'Visible', path: '$.ae.visible', defaultValue: true }),
     FieldDef.Bool({ label: 'Deprecated', path: '$.ae.deprecated' }),
     FieldDef.Json({ label: 'Meta', path: '$.ae.meta', defaultValue: '{}' }),
     FieldDef.EmbeddedList({ label: 'Access Control Checks', path: '$.ae.accessControlChecks', formDef: accessControlFormDef }),
-    // FieldDef.EmbeddedForm({ label: 'Access Control Checks', path: '$.ae.accessControlCheck', formDef: accessControlFormDef }),
-    FieldDef.SimpleSelect({ label: 'Provider', path: '$.ae.providerId', choices: providersPromise }),
+    FieldDef.AsyncSelect({ label: 'Provider', path: '$.ae.providerId', defaultValue: 'uuid-bettercloud-1234', choices: getProviders }),
     FieldDef.EmbeddedList({ label: 'Parameters', path: '$.ae.parameters', formDef: parameterFormDef }),
+
     // TODO: custom steps form field? could be done with drag and drop? http://jsfiddle.net/vacidesign/uskx816g/
   ]
 })
@@ -87,7 +102,6 @@ const actionFormDef = FormDef.of({
 const model = {
   // id: "aaa-1111-bbbb-22",
   ae: {
-    // accessControlCheck: {},
     "accessControlChecks": [
       {
         "key": "SLACK_VIEW_USERS"
@@ -105,7 +119,15 @@ const model = {
         "key": "GOOGLE_ADMIN"
       }
     ],
-    // providerId: providers[1].value
+    "parameters": [
+      {
+        "id": "5d8e76cd-a054-4c6d-ae10-a5f950131889",
+        "name": "userId",
+        "required": true,
+        "contextClass": "SlackUser",
+        "type": "ID"
+      }
+    ]
   }
 }
 
