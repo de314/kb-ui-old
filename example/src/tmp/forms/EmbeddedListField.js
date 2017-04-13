@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 import { compose, withHandlers } from 'recompose'
-import FormDef from './FormDef'
+import FormDef from '../FormDef'
 import EmbeddedFormField from './EmbeddedFormField'
 
 const EmbeddedListField = ({ field, model: models, onChange, addOne, removeOne }) => {

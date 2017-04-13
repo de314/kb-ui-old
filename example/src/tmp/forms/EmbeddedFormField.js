@@ -2,7 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import { compose, withHandlers } from 'recompose'
 import jsonpath from 'kb-path'
-import FormDef from './FormDef'
+import FormDef from '../FormDef'
 import FieldFactory from './FieldFactory'
 
 import PropTypes from 'prop-types'

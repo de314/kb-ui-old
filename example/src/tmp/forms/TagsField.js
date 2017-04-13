@@ -4,7 +4,7 @@ import jsonpath from 'kb-path'
 
 import defaultValueHoc from './defaultValueHoc'
 
-import FieldDef from './FieldDef'
+import FieldDef from '../FieldDef'
 import { Creatable } from 'react-select';
 import SimpleFormGroup from './SimpleFormGroup'
 

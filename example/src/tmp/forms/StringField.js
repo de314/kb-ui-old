@@ -4,7 +4,7 @@ import jsonpath from 'kb-path'
 
 import defaultValueHoc from './defaultValueHoc'
 
-import FieldDef from './FieldDef'
+import FieldDef from '../FieldDef'
 import SimpleFormGroup from './SimpleFormGroup'
 
 const StringField = ({ field, model, onChange }) => {
