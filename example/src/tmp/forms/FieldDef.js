@@ -10,6 +10,7 @@ const fieldDefaults = {
  *   jsonpath path:            the jsonpath to the value in the model
  *   string   [label]:         the field label
  *   string   [defaultValue]:  if the value does not exist at `path` then this value is used
+ *   bool     [readOnly]:      if the field can be edited
  */
 function FieldDef(options) {
   _.assignIn(this, fieldDefaults, _.defaultTo(options, {}));
