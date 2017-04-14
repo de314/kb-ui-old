@@ -4,7 +4,6 @@ import _ from 'lodash'
 import ViewDef from '../ViewDef'
 
 import View from './View'
-import SimpleViewGroup from './SimpleViewGroup'
 
 const ListView = ({ definition, model: models }) => {
   return (

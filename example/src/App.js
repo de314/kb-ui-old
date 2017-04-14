@@ -3,12 +3,12 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 
 import 'react-select/dist/react-select.css'
 
-import Demo from './components/Demo'
-
 import ActionFormDemo from './components/ActionFormDemo'
 
 import ActionViewDemo from './components/ActionViewDemo'
 import ActionsViewDemo from './components/ActionsViewDemo'
+
+import InMemProviderDemo from './components/ImMemoryProviderDemo'
 
 const App = () => {
   return (
@@ -20,12 +20,14 @@ const App = () => {
             <li><Link to="/forms/tasks">Task Builder Form Demo</Link></li>
             <li><Link to="/views/action">Action View Demo</Link></li>
             <li><Link to="/views/actions">Action Grid Demo</Link></li>
+            <li><Link to="/providers/mem">In Mem Provider Demo</Link></li>
           </ul>
         )} />
         <Route path="/forms/action" component={ActionFormDemo} />
 
         <Route path="/views/action" component={ActionViewDemo} />
         <Route path="/views/actions" component={ActionsViewDemo} />
+        <Route path="/providers/mem" component={InMemProviderDemo} />
       </div>
     </Router>
   );

@@ -4,14 +4,11 @@ import _ from 'lodash'
 import ViewDef from '../ViewDef'
 import FieldFactory from './FieldFactory'
 
-import View from './View'
-import SimpleViewGroup from './SimpleViewGroup'
-
 const TableView = ({ definition, model: models }) => {
   const { label, fields } = definition;
   return (
     <div className="TableView">
-      <div className="list-view-label">{definition.label}</div>
+      <div className="list-view-label">{label}</div>
       <table>
         <thead>
           <tr>
