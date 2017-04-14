@@ -1,10 +1,10 @@
 import React from 'react'
 
-import ViewDef from '../tmp/ViewDef'
-import ViewFactory from '../tmp/ViewFactory'
-import FieldDef from '../tmp/FieldDef'
+import ViewDef from '../lib-src/ViewDef'
+import ViewFactory from '../lib-src/ViewFactory'
+import FieldDef from '../lib-src/FieldDef'
 
-import '../tmp/default.css'
+import '../../../dist/default.css'
 
 // https://bitbucket.org/bettercloud/ae-git-bridge-micro/src/31303ff8814fbdee3e9e0b1f82e2c08d98cb02a4/src/main/resources/static/admin/index.html?at=continuous&fileviewer=file-view-default
 

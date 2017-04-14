@@ -1,3 +1,6 @@
+# Mac
+.DS_Store
+
 # Logs
 logs
 *.log
@@ -25,11 +28,13 @@ coverage
 
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
-lib/
+dist
+*.tgz
 
 # Dependency directories
 node_modules
 jspm_packages
+bower_components
 
 # Optional npm cache directory
 .npm

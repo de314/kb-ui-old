@@ -2,9 +2,9 @@ import React from 'react'
 import { compose, withState } from 'recompose'
 import uuid from 'uuid'
 
-import FormDef from '../tmp/FormDef'
-import FormFactory from '../tmp/FormFactory'
-import FieldDef from '../tmp/FieldDef'
+import FormDef from '../lib-src/FormDef'
+import FormFactory from '../lib-src/FormFactory'
+import FieldDef from '../lib-src/FieldDef'
 
 // https://bitbucket.org/bettercloud/ae-git-bridge-micro/src/31303ff8814fbdee3e9e0b1f82e2c08d98cb02a4/src/main/resources/static/admin/index.html?at=continuous&fileviewer=file-view-default
 

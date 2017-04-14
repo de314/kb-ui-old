@@ -2,9 +2,9 @@ import React from 'react'
 import { compose, withState } from 'recompose'
 import uuid from 'uuid'
 
-import FormDef from '../tmp/forms/FormDef'
-import FormFactory from '../tmp/forms/FormFactory'
-import FieldDef from '../tmp/forms/FieldDef'
+import FormDef from '../lib-src/forms/FormDef'
+import FormFactory from '../lib-src/forms/FormFactory'
+import FieldDef from '../lib-src/forms/FieldDef'
 
 const form = FormDef.of({
   modelType: 'TestUser',
