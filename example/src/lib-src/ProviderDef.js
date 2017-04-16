@@ -25,9 +25,9 @@ ProviderDef.InMem = (options) => ProviderDef.of(_.assignIn({
   },
   // See https://lodash.com/docs/4.17.4#conforms for q syntax
   findAll(limit = 20, offset = 0, q = {}) {
-    const items = this.items.filter(_.conforms(q)).slice(offset, offset + limit);
+    const items = this.items.filter(_.conforms(q));
     return {
-      items,
+      items: items.slice(offset, offset + limit),
       limit,
       offset,
       q,

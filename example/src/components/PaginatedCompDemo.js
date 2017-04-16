@@ -5,7 +5,6 @@ import ProviderDef from '../lib-src/ProviderDef'
 import PagedContainer from '../lib-src/views/PagedContainer'
 import FieldDef from '../lib-src/FieldDef'
 import ViewDef from '../lib-src/ViewDef'
-import ViewFactory from '../lib-src/ViewFactory'
 
 import '../lib-src/default.css'
 
@@ -28,14 +27,10 @@ const pagedTableDef = ViewDef.Table({
   ]
 })
 
-const Demo = ({ formState, onSubmit }) => {
-  console.log(UserProvider);
+const Demo = () => {
   return (
     <div className="StringFieldDemo">
-      {/* <PagedContainer>
-        {ViewFactory.render(pagedTableDef)}
-      </PagedContainer> */}
-      <PagedContainer />
+      <PagedContainer provider={UserProvider} subViewDef={pagedTableDef} pagination={{ limit: 2 }} />
     </div>
   );
 }

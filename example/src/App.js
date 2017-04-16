@@ -30,7 +30,7 @@ const App = () => {
         <Route path="/views/action" component={ActionViewDemo} />
         <Route path="/views/actions" component={ActionsViewDemo} />
         <Route path="/providers/mem" component={InMemProviderDemo} />
-        <Route path="/providers/paged" component={PaginatedCompDemo} />
+        <Route path="/views/paged" component={PaginatedCompDemo} />
       </div>
     </Router>
   );
