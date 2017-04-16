@@ -32,4 +32,5 @@ ViewFactory.render = (definition, model) => {
   }
 }
 
+
 export default ViewFactory

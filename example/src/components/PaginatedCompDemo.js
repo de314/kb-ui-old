@@ -2,6 +2,11 @@ import React from 'react'
 import _ from 'lodash'
 import ProviderDef from '../lib-src/ProviderDef'
 
+import PagedContainer from '../lib-src/views/PagedContainer'
+import FieldDef from '../lib-src/FieldDef'
+import ViewDef from '../lib-src/ViewDef'
+import ViewFactory from '../lib-src/ViewFactory'
+
 import '../lib-src/default.css'
 
 const items = [
@@ -14,23 +19,23 @@ const items = [
 
 const UserProvider = ProviderDef.InMem({ items })
 
-const j = (o) => JSON.stringify(o, null, 2)
-
-
-function runDemo() {
-  console.log("UserProvider.findOne(-1)", j(UserProvider.findOne(-1)));
-  console.log("UserProvider.findOne(2)", j(UserProvider.findOne(2)));
-  console.log("UserProvider.findAll()", j(UserProvider.findAll()));
-  console.log("UserProvider.findAll(3, 0)", j(UserProvider.findAll(3, 0)));
-  console.log("UserProvider.findAll(3, 1)", j(UserProvider.findAll(3, 1)));
-  console.log("UserProvider.findAll(100, 0, { id: (id) => id < 2 })", j(UserProvider.findAll(100, 0, { id: (id) => id < 2 })));
-}
+const pagedTableDef = ViewDef.Table({
+  fields: [
+    FieldDef.String({ header: 'ID', path: '$.id' }),
+    FieldDef.String({ header: 'Name', path: '$.name' }),
+    FieldDef.String({ header: 'Email', path: '$.email' }),
+    FieldDef.String({ header: 'Age', path: '$.age' })
+  ]
+})
 
 const Demo = ({ formState, onSubmit }) => {
-  runDemo()
+  console.log(UserProvider);
   return (
     <div className="StringFieldDemo">
-      open the console
+      {/* <PagedContainer>
+        {ViewFactory.render(pagedTableDef)}
+      </PagedContainer> */}
+      <PagedContainer />
     </div>
   );
 }
